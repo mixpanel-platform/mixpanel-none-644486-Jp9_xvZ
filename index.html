@@ -53,7 +53,12 @@
           var total = 0;
           final[keys[i]] = {};
           for(j=0; j<subkeys.length; j++) {
-            final[keys[i]][subkeys[j]] = keys[i];
+            if(data[keys[i]][subkeys[j]] > 0) {
+              final[keys[i]][subkeys[j]] = parseInt(keys[i]);
+            }
+            else{
+              final[keys[i]][subkeys[j]] = 0;
+            }
           }
         }
         console.log(final);
