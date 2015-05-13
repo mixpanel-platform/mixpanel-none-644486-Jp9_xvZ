@@ -26,6 +26,7 @@
         to: '2015-01-01',
         type: 'general',
         unit: 'month'
+        //buckets: 10
       }
 
       var runQuery = function() {
@@ -38,11 +39,27 @@
         if (eventName && dateRange) {
           MP.api.segment(eventName, "value", dateRange).done(function(results) {
             console.log(results.values());
-            eventGraph.MPChart('setData', results);
-            eventTable.MPTable('setData', results);
+            data = results.values();
+            processResults(data);
           });
         }
       };
+      
+      var processResults = function(data) {
+        var final = {};
+        var keys = Object.keys(data);
+        for(i=0; i<keys.length; i++) {
+          var subkeys = Object.keys(data[keys[i]]);
+          var total = 0;
+          final[keys[i]] = {};
+          for(j=0; j<subkeys.length; j++) {
+            final[keys[i]][subkeys[j]] = keys[i];
+          }
+        }
+        console.log(final);
+        eventGraph.MPChart('setData', final);
+        eventTable.MPTable('setData', final);
+      }
 
       dateSelect.on('change', runQuery);
       
